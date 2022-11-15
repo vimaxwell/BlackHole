@@ -109,20 +109,7 @@ class YouTubeServices {
   }
 
   Future<List> getSearchSuggestions({required String query}) async {
-    const baseUrl =
-        // 'https://suggestqueries.google.com/complete/search?client=firefox&ds=yt&q=';
-        'https://invidious.snopyta.org/api/v1/search/suggestions?q=';
-    final Uri link = Uri.parse(baseUrl + query);
-    try {
-      final Response response = await get(link, headers: headers);
-      if (response.statusCode != 200) {
-        return [];
-      }
-      final Map res = jsonDecode(response.body) as Map;
-      return res['suggestions'] as List;
-    } catch (e) {
-      return [];
-    }
+    return yt.search.getQuerySuggestions(query);
   }
 
   List formatVideoItems(List itemsList) {
@@ -333,7 +320,7 @@ class YouTubeServices {
   }
 
   Future<List<Video>> fetchSearchResults(String query) async {
-    final List<Video> searchResults = await yt.search.getVideos(query);
+    final List<Video> searchResults = await yt.search.search(query);
 
     // Uri link = Uri.https(searchAuthority, searchPath, {"search_query": query});
     // final Response response = await get(link);
